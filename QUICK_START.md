@@ -2,11 +2,11 @@
 
 ## 📋 Project Overview
 
-You now have a complete **Full-Stack MERN Application** designed to help Indian middle-class homeowners enhance their residential property values.
+You now have a complete **Full-Stack Application** designed to help Indian middle-class homeowners enhance their residential property values.
 
 ### What's Included ✅
 
-#### Backend (Node.js + Express + MongoDB)
+#### Backend (Node.js + Express + MySQL)
 - ✅ Authentication system (Login/Register)
 - ✅ User management
 - ✅ Property submission & management
@@ -44,12 +44,12 @@ npm run setup
 ```bash
 cd backend
 cp .env.example .env
-# Edit .env file with your MongoDB connection and JWT secret
+# Edit .env file with your MySQL connection and JWT secret
 ```
 
-### Step 3: Start MongoDB
-- **Local**: Run `mongod` in terminal
-- **Cloud**: Use MongoDB Atlas connection string
+### Step 3: Ensure MySQL is running
+- **Local**: Make sure your MySQL service is started
+- **Cloud**: Use your MySQL connection details in the .env file
 
 ### Step 4: Run Application
 ```bash
@@ -355,14 +355,12 @@ Frontend:  frontend/.env.local       (API URL if different)
 ### Official Documentation
 - [Node.js Docs](https://nodejs.org/docs/)
 - [Express.js Guide](https://expressjs.com/)
-- [MongoDB Manual](https://docs.mongodb.com/manual/)
 - [React Documentation](https://react.dev/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 
 ### Tutorials & Guides
 - JWT Authentication
 - Redux state management
-- Mongoose schemas
 - React Router
 - Tailwind CSS
 

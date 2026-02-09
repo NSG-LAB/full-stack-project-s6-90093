@@ -33,12 +33,12 @@
 │  ├── 🌐 Services (API integration with Axios)                              │
 │  └── 💅 Styling (Tailwind CSS + Custom CSS)                                │
 │                                                                              │
-│  BACKEND (Node.js + Express + MongoDB)                                     │
+│  BACKEND (Node.js + Express + MySQL)                                       │
 │  ├── 🔐 Authentication (JWT + bcryptjs)                                    │
 │  ├── 📦 Models (User, Property, Recommendation)                            │
 │  ├── 🛣️ Routes (Auth, Users, Properties, Recommendations)                 │
 │  ├── 🔒 Middleware (JWT verification, Error handling)                      │
-│  └── 💾 Database (MongoDB with Mongoose)                                   │
+│  └── 💾 Database (MySQL with Sequelize)                                    │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
 
@@ -270,7 +270,7 @@
 ├──────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
 │  ✅ Complete MERN Stack                                                     │
-│     React + Express + MongoDB + Node.js                                    │
+│     React + Express + MySQL + Node.js                                      │
 │                                                                              │
 │  ✅ Authentication System                                                   │
 │     JWT-based, secure password hashing with bcryptjs                       │

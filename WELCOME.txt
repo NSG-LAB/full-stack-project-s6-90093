@@ -2,7 +2,7 @@
 ║                                                                            ║
 ║     👋 WELCOME TO YOUR PROPERTY VALUE ENHANCEMENT PLATFORM! 🏠             ║
 ║                                                                            ║
-║     A Complete Full-Stack MERN Application for Indian Middle-Class        ║
+║     A Complete Full-Stack Application for Indian Middle-Class             ║
 ║     Homeowners to Enhance Their Residential Property Values               ║
 ║                                                                            ║
 ╚════════════════════════════════════════════════════════════════════════════╝
@@ -13,7 +13,7 @@
 
 📋 WHAT'S INCLUDED:
 
-✅ Complete Backend (Node.js + Express + MongoDB)
+✅ Complete Backend (Node.js + Express + MySQL)
    - User authentication system
    - Property management
    - Recommendation engine
@@ -51,7 +51,7 @@
 3. Configure database:
    cd backend
    cp .env.example .env
-   # Edit .env with your MongoDB connection
+   # Edit .env with your MySQL connection details
 
 4. Start application:
    cd ..
@@ -264,12 +264,11 @@ Documentation:
   • ENHANCEMENT_IDEAS.md - Property improvement ideas
 
 External Resources:
-  • Node.js Docs: https://nodejs.org/
-  • Express.js: https://expressjs.com/
-  • MongoDB: https://docs.mongodb.com/
-  • React: https://react.dev/
-  • Redux: https://redux-toolkit.js.org/
-  • Tailwind: https://tailwindcss.com/
+   • Node.js Docs: https://nodejs.org/
+   • Express.js: https://expressjs.com/
+   • React: https://react.dev/
+   • Redux: https://redux-toolkit.js.org/
+   • Tailwind: https://tailwindcss.com/
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -294,7 +293,7 @@ External Resources:
 2. Review error messages carefully
 3. Test API endpoints in Postman
 4. Check browser console for frontend errors
-5. Verify MongoDB connection
+5. Verify database connection
 6. Review DEVELOPMENT_GUIDE.md for troubleshooting
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

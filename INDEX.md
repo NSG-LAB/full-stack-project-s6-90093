@@ -195,7 +195,7 @@ See [SAMPLE_DATA.md](SAMPLE_DATA.md) for:
 - Sample users
 - Sample properties
 - Sample recommendations
-- MongoDB insert commands
+- Database seeding notes
 
 ---
 
@@ -279,9 +279,9 @@ npm test                 # Run tests
 
 ### Common Issues
 
-**"MongoDB connection error"**
-- Check if MongoDB is running
-- Verify connection string in `.env`
+**"Database connection error"**
+- Ensure MySQL is running
+- Verify connection details in `.env`
 - Check credentials
 
 **"Port already in use"**
@@ -309,12 +309,11 @@ npm test                 # Run tests
 2. Review error messages carefully
 3. Test in Postman for API issues
 4. Check browser console for frontend issues
-5. Check MongoDB Compass for database issues
+5. Check your MySQL client or logs for database issues
 
 ### External Resources
 - [Node.js Docs](https://nodejs.org/)
 - [Express.js Guide](https://expressjs.com/)
-- [MongoDB Docs](https://docs.mongodb.com/)
 - [React Docs](https://react.dev/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Tailwind CSS](https://tailwindcss.com/)

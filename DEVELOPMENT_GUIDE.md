@@ -8,7 +8,7 @@ This is a full-stack MERN application designed to help Indian middle-class homeo
 ### Backend
 - **Runtime**: Node.js
 - **Framework**: Express.js
-- **Database**: MongoDB
+- **Database**: MySQL (via Sequelize)
 - **Authentication**: JWT (JSON Web Tokens)
 - **Password Hashing**: bcryptjs
 
@@ -25,7 +25,7 @@ This is a full-stack MERN application designed to help Indian middle-class homeo
 ### Backend Structure
 ```
 backend/
-├── models/           # MongoDB schemas
+├── models/           # Sequelize models
 ├── routes/           # API endpoints
 ├── middleware/       # Custom middleware
 ├── services/         # Business logic (future)
@@ -223,7 +223,7 @@ const handleSubmit = (e) => {
 1. Run backend and frontend
 2. Use browser dev tools
 3. Check network requests
-4. Verify data in MongoDB
+4. Verify data in MySQL
 
 ### API Testing
 - Use Postman or REST Client VS Code extension
@@ -290,7 +290,7 @@ npm run dev          # Start both servers
 
 1. **Use console.log** for simple debugging
 2. **Browser DevTools** for frontend issues
-3. **MongoDB Compass** for database inspection
+3. Your preferred MySQL client for database inspection
 4. **Postman** for API debugging
 5. **Redux DevTools** for state management
 6. **Network tab** for request/response inspection
@@ -298,7 +298,6 @@ npm run dev          # Start both servers
 ## Resources
 
 - [Express.js Docs](https://expressjs.com/)
-- [MongoDB Docs](https://docs.mongodb.com/)
 - [React Docs](https://react.dev/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Tailwind CSS](https://tailwindcss.com/)

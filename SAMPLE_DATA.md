@@ -400,30 +400,12 @@ This file contains sample data for testing and populating the database.
 
 ---
 
-## MongoDB Insert Commands
+## Database Seeding Notes
 
-### Create Admin User
-```javascript
-db.users.insertOne({
-  firstName: "Admin",
-  lastName: "User",
-  email: "admin@propertyvalue.com",
-  password: "hashed_password_here",
-  role: "admin",
-  city: "Mumbai",
-  state: "Maharashtra",
-  isActive: true,
-  createdAt: new Date(),
-  updatedAt: new Date()
-})
-```
+The backend uses MySQL with Sequelize. You can create an admin user by either:
 
-### Create Multiple Recommendations
-```javascript
-db.recommendations.insertMany([
-  // Paste recommendation objects here
-])
-```
+1. Hitting the registration endpoint and then manually updating the role to `admin` in the database, or
+2. Writing a small seed script using Sequelize models in the backend.
 
 ---
 

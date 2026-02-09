@@ -28,10 +28,10 @@ A comprehensive full-stack platform designed to help Indian middle-class homeown
 
 ### Backend
 - **Node.js** + **Express.js** - REST API server
-- **MongoDB** - NoSQL database
+- **MySQL** - Relational database
+- **Sequelize** - ORM
 - **JWT** - Secure authentication
 - **bcryptjs** - Password hashing
-- **Mongoose** - Database ODM
 
 ### Frontend
 - **React.js** - UI framework
@@ -46,7 +46,7 @@ A comprehensive full-stack platform designed to help Indian middle-class homeown
 ```
 full-stack project/
 ├── backend/
-│   ├── models/          # MongoDB schemas (User, Property, Recommendation)
+│   ├── models/          # Database models (User, Property, Recommendation)
 │   ├── routes/          # API endpoints
 │   ├── middleware/      # Auth & error handling
 │   ├── .env.example     # Environment variables
@@ -72,7 +72,7 @@ full-stack project/
 
 ### Prerequisites
 - Node.js v14+
-- MongoDB (local or Atlas)
+- MySQL server (local or cloud)
 - npm or yarn
 
 ### Installation

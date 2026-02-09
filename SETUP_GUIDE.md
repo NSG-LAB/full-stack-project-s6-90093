@@ -2,7 +2,7 @@
 
 ## 📋 Prerequisites
 - Node.js v14 or higher
-- MongoDB (local or cloud instance)
+- MySQL server (local or cloud instance)
 - npm or yarn package manager
 - Git
 
@@ -40,7 +40,11 @@ npm install
 **Backend (.env file):**
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/property-value-enhancement
+MYSQL_DB=property_app
+MYSQL_USER=root
+MYSQL_PASSWORD=your_mysql_password
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
 JWT_SECRET=your_secure_jwt_secret_key_here
 JWT_EXPIRE=7d
 NODE_ENV=development
@@ -48,11 +52,8 @@ ADMIN_EMAIL=admin@propertyvalue.com
 ADMIN_PASSWORD=admin_password_123
 ```
 
-### 4. Start MongoDB
-```bash
-# If using local MongoDB
-mongod
-```
+### 4. Ensure MySQL is running
+- Start your local MySQL service or ensure your cloud MySQL instance is accessible
 
 ### 5. Run the Application
 
@@ -80,19 +81,10 @@ Backend API runs at: **http://localhost:5000/api**
 
 ## 📊 Database Setup
 
-### Create Initial Admin User (Optional)
-```bash
-# Use the credentials from .env file or MongoDB Compass
-db.users.insertOne({
-  firstName: "Admin",
-  lastName: "User",
-  email: "admin@propertyvalue.com",
-  password: "hashed_password",
-  role: "admin",
-  createdAt: new Date(),
-  updatedAt: new Date()
-})
-```
+The backend uses MySQL with Sequelize. Tables are created automatically by Sequelize when the server starts. To create an initial admin user, you can either:
+
+- Register a user via the `/api/auth/register` endpoint and then update their `role` to `admin` directly in the database, or
+- Add a small seed script using the Sequelize `User` model in the backend.
 
 ## 🔑 Test Credentials
 
@@ -163,10 +155,10 @@ full-stack project/
 
 ## 🐛 Troubleshooting
 
-### MongoDB Connection Error
-- Ensure MongoDB is running
-- Check connection string in .env
-- Verify database credentials
+### Database Connection Error
+- Ensure your MySQL service is running
+- Check connection details in .env
+- Verify database credentials and host/port
 
 ### Port Already in Use
 ```bash
@@ -189,7 +181,6 @@ npm install
 
 ## 📚 Additional Resources
 
-- [MongoDB Documentation](https://docs.mongodb.com/)
 - [Express.js Guide](https://expressjs.com/)
 - [React Documentation](https://react.dev/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)

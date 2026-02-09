@@ -2,15 +2,15 @@
 
 ## 🎉 Congratulations!
 
-Your complete **Full-Stack MERN Application** for Property Value Enhancement has been created successfully!
+Your complete **Full-Stack Application** for Property Value Enhancement has been created successfully!
 
 ---
 
 ## 📊 DELIVERABLES COMPLETED
 
-### ✅ Backend (Node.js + Express + MongoDB)
+### ✅ Backend (Node.js + Express + MySQL)
 - [x] Express server setup with middleware
-- [x] MongoDB models (User, Property, Recommendation)
+- [x] Database models (User, Property, Recommendation)
 - [x] Authentication routes (Register, Login)
 - [x] User management routes
 - [x] Property submission & management routes
@@ -38,7 +38,7 @@ Your complete **Full-Stack MERN Application** for Property Value Enhancement has
 - [x] Property schema with location and condition tracking
 - [x] Recommendation schema with ROI and category data
 - [x] Proper indexing and relationships
-- [x] Support for MongoDB Atlas or local MongoDB
+- [x] Support for MySQL database
 
 ### ✅ Documentation (9 Files)
 - [x] README.md - Project overview
@@ -193,8 +193,8 @@ full-stack project/
 ### Backend
 - Node.js - Server runtime
 - Express.js - Web framework
-- MongoDB - NoSQL database
-- Mongoose - Database ODM
+- MySQL - Relational database
+- Sequelize - ORM
 - JWT - Secure tokens
 - bcryptjs - Password hashing
 
@@ -304,7 +304,6 @@ The application is ready for deployment to:
 ### External Resources
 - [Node.js Documentation](https://nodejs.org/)
 - [Express.js Guide](https://expressjs.com/)
-- [MongoDB Documentation](https://docs.mongodb.com/)
 - [React Documentation](https://react.dev/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
