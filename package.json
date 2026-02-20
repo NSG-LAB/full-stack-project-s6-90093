@@ -4,10 +4,13 @@
   "description": "Property Value Enhancement Platform for Indian Middle-Class Homeowners",
   "private": true,
   "scripts": {
-    "backend": "cd backend && npm install && npm run dev",
-    "frontend": "cd frontend && npm install && npm start",
+    "backend": "npm --prefix backend run dev",
+    "frontend": "npm --prefix frontend start",
+    "build": "npm --prefix frontend run build",
+    "backend:check": "npm --prefix backend run test -- --runInBand --passWithNoTests",
+    "build-all": "npm run build && npm run backend:check",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "setup": "npm install -g concurrently && cd backend && npm install && cd ../frontend && npm install"
+    "setup": "npm install && npm --prefix backend install && npm --prefix frontend install"
   },
   "keywords": [
     "property",
