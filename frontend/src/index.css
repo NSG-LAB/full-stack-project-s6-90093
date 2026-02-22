@@ -2,6 +2,133 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #0f172a;
+  --color-text-muted: #475569;
+  --color-primary: #1e3a8a;
+  --color-primary-hover: #1e2f6f;
+  --color-primary-light: #dbeafe;
+  --color-emerald: #059669;
+  --color-emerald-hover: #047857;
+  --card-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.dark {
+  --color-bg: #0f172a;
+  --color-surface: #111827;
+  --color-border: #1f2937;
+  --color-text: #f1f5f9;
+  --color-text-muted: #cbd5e1;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-light: #1e293b;
+  --color-emerald: #059669;
+  --color-emerald-hover: #047857;
+  --card-shadow: 0 8px 24px rgba(2, 6, 23, 0.45);
+}
+
+@layer components {
+  .ui-page {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .ui-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--card-shadow);
+  }
+
+  .ui-card-item {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--card-shadow);
+  }
+
+  .ui-card-title {
+    color: var(--color-primary);
+  }
+
+  .ui-positive {
+    color: var(--color-emerald);
+  }
+
+  .btn-base {
+    @apply rounded-md font-semibold transition-all duration-200 min-h-[44px] px-4 py-2;
+  }
+
+  .btn-primary {
+    @apply btn-base text-white;
+    background-color: var(--color-primary);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  .btn-secondary {
+    @apply btn-base border;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: transparent;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-primary-light);
+  }
+
+  .btn-success {
+    @apply btn-base text-white;
+    background-color: var(--color-emerald);
+  }
+
+  .btn-success:hover {
+    background-color: var(--color-emerald-hover);
+  }
+
+  /* Mobile-first responsive utilities */
+  .mobile-container {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .mobile-text {
+    @apply text-sm sm:text-base;
+  }
+
+  .mobile-heading {
+    @apply text-xl sm:text-2xl lg:text-3xl;
+  }
+
+  .mobile-card {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+
+  .mobile-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .mobile-form-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  /* Touch-friendly interactions */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Mobile-optimized spacing */
+  .mobile-section {
+    @apply py-8 sm:py-12 lg:py-16;
+  }
+
+  .mobile-margin {
+    @apply mx-4 sm:mx-6 lg:mx-auto;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -14,6 +141,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
 }
 
 code {
