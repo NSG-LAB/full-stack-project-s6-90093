@@ -83,6 +83,13 @@ spec:
             command: ["mysqladmin", "ping", "-h", "localhost"]
           initialDelaySeconds: 5
           periodSeconds: 5
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
       volumes:
       - name: mysql-storage
         persistentVolumeClaim:
