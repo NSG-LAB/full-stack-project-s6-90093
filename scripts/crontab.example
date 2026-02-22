@@ -1,0 +1,20 @@
+# Cron jobs for Property Value Enhancement App
+# Add these lines to /etc/crontab or create a cron file in /etc/cron.d/
+
+# Database backup - Daily at 2 AM
+0 2 * * * root MYSQL_USER=propertyuser MYSQL_PASSWORD=propertypass /path/to/property-app/scripts/backup.sh
+
+# Database backup - Weekly on Sunday at 3 AM (full backup)
+0 3 * * 0 root MYSQL_USER=propertyuser MYSQL_PASSWORD=propertypass /path/to/property-app/scripts/backup.sh
+
+# Performance monitoring - Every 5 minutes
+*/5 * * * * root cd /path/to/property-app/backend && /path/to/property-app/scripts/monitor.sh
+
+# Log rotation - Daily at 1 AM
+0 1 * * * root /usr/sbin/logrotate /etc/logrotate.d/property-app
+
+# Health check - Every 5 minutes
+*/5 * * * * root curl -f http://localhost:5000/api/health || systemctl restart property-backend
+
+# Optional: Send backup reports via email
+# 0 6 * * * root /path/to/property-app/scripts/backup-report.sh | mail -s "Daily Backup Report" admin@yourdomain.com

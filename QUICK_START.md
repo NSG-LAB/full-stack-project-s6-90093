@@ -36,8 +36,7 @@ You now have a complete **Full-Stack Application** designed to help Indian middl
 
 ### Step 1: Install Dependencies
 ```bash
-cd c:\Users\sivag\Desktop\FSD\full-stack project
-npm run setup
+
 ```
 
 ### Step 2: Configure Environment
