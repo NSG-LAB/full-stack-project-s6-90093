@@ -184,34 +184,40 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Set deployment environment
-      id: set-env
-      run: |
-        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          echo "DEPLOY_ENV=${{ inputs.environment }}" >> $GITHUB_ENV
-          echo "deploy_env=${{ inputs.environment }}" >> $GITHUB_OUTPUT
-        else
-          echo "DEPLOY_ENV=production" >> $GITHUB_ENV
-          echo "deploy_env=production" >> $GITHUB_OUTPUT
-        fi
-    - name: Verify Docker images exist
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        if [ -n "$DOCKER_USERNAME" ] && [ -n "$DOCKER_PASSWORD" ]; then
-          echo "Docker images should be available in registry"
-          echo "Backend: $DOCKER_USERNAME/property-backend:latest"
-          echo "Frontend: $DOCKER_USERNAME/property-frontend:latest"
-        else
-          echo "Docker images built locally (not pushed to registry)"
-        fi
-    - name: Deploy to ${{ steps.set-env.outputs.deploy_env }}
-      run: |
-        echo "Deploying to ${{ steps.set-env.outputs.deploy_env }} environment"
-        echo "Deployment would happen here based on environment: ${{ steps.set-env.outputs.deploy_env }}"
-        echo "This could trigger a webhook to your deployment platform"
-        echo "Or use kubectl to deploy to Kubernetes"
-        echo "Or use docker-compose for local deployment"
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set deployment environment
+        id: set-env
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "DEPLOY_ENV=${{ inputs.environment }}" >> $GITHUB_ENV
+            echo "deploy_env=${{ inputs.environment }}" >> $GITHUB_OUTPUT
+          else
+            echo "DEPLOY_ENV=production" >> $GITHUB_ENV
+            echo "deploy_env=production" >> $GITHUB_OUTPUT
+          fi
+      - name: Verify Docker images exist
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          if [ -n "$DOCKER_USERNAME" ] && [ -n "$DOCKER_PASSWORD" ]; then
+            echo "Docker images should be available in registry"
+            echo "Backend: $DOCKER_USERNAME/property-backend:latest"
+            echo "Frontend: $DOCKER_USERNAME/property-frontend:latest"
+          else
+            echo "Docker images built locally (not pushed to registry)"
+          fi
+      - name: Deploy to environment
+        run: |
+          echo "Deploying to ${{ steps.set-env.outputs.deploy_env }} environment"
+          if [ "${{ steps.set-env.outputs.deploy_env }}" = "production" ] || [ "${{ steps.set-env.outputs.deploy_env }}" = "staging" ]; then
+            echo "Deploying to Kubernetes cluster using kubectl..."
+            # Example: kubectl apply -f k8s/
+            kubectl version --client
+            kubectl apply -f k8s/
+          else
+            echo "Deploying locally using docker-compose..."
+            docker compose version
+            docker compose -f docker-compose.yml up -d --build
+          fi
