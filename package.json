@@ -4,6 +4,8 @@
   "description": "Property Value Enhancement Platform for Indian Middle-Class Homeowners",
   "private": true,
   "scripts": {
+    "start": "npm run dev",
+    "dev:local": "node scripts/dev-local.js",
     "backend": "npm --prefix backend run dev",
     "frontend": "npm --prefix frontend start",
     "build": "npm --prefix frontend run build",
