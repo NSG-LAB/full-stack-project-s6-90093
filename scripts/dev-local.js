@@ -1,10 +1,40 @@
 const spawn = require('cross-spawn');
 const net = require('net');
 
-function isPortAvailable(port) {
+function hasActiveListener(port, host) {
   return new Promise((resolve) => {
-    const server = net.createServer();
+    const socket = new net.Socket();
+    let settled = false;
 
+    const finish = (value) => {
+      if (!settled) {
+        settled = true;
+        socket.destroy();
+        resolve(value);
+      }
+    };
+
+    socket.setTimeout(250);
+    socket.once('connect', () => finish(true));
+    socket.once('timeout', () => finish(false));
+    socket.once('error', () => finish(false));
+
+    socket.connect(port, host);
+  });
+}
+
+function isPortAvailable(port) {
+  return new Promise(async (resolve) => {
+    const listenerExists =
+      (await hasActiveListener(port, '127.0.0.1')) ||
+      (await hasActiveListener(port, '::1'));
+
+    if (listenerExists) {
+      resolve(false);
+      return;
+    }
+
+    const server = net.createServer();
     server.once('error', () => {
       resolve(false);
     });
@@ -13,7 +43,7 @@ function isPortAvailable(port) {
       server.close(() => resolve(true));
     });
 
-    server.listen(port, '0.0.0.0');
+    server.listen(port);
   });
 }
 
