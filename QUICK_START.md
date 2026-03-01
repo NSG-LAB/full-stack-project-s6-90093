@@ -60,7 +60,12 @@ npm run dev:local
 - Uses a Windows-safe launcher (`cross-spawn`)
 - Disables Redis dependency for local dev (`REDIS_DISABLED=true`)
 - Uses backend port `5001` by default to avoid common `5000` conflicts
-- Points frontend API base URL to `http://localhost:5001/api`
+- Falls back to the next available backend port if `5001` is busy
+- Points frontend API base URL to the selected backend port
+
+Optional overrides:
+- Set `AUTO_SELECT_API_PORT=false` to force strict use of `LOCAL_API_PORT`
+- Set `LOCAL_API_PORT=5010` to change the preferred backend port
 
 **Access:**
 - Frontend: http://localhost:3000
