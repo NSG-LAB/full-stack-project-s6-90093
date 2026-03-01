@@ -67,6 +67,10 @@ Optional overrides:
 - Set `AUTO_SELECT_API_PORT=false` to force strict use of `LOCAL_API_PORT`
 - Set `LOCAL_API_PORT=5010` to change the preferred backend port
 
+Examples:
+- PowerShell: `$env:AUTO_SELECT_API_PORT='false'; $env:LOCAL_API_PORT='5010'; npm run dev:local`
+- bash: `AUTO_SELECT_API_PORT=false LOCAL_API_PORT=5010 npm run dev:local`
+
 **Access:**
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5001/api
