@@ -219,6 +219,19 @@ const handleSubmit = (e) => {
 
 ## Testing
 
+### Local Test/Debug Without Redis
+If Redis is not running locally, you can disable Redis usage during backend test/debug runs:
+
+```bash
+# Linux/macOS
+REDIS_DISABLED=true NODE_ENV=test npm test
+
+# Windows PowerShell
+$env:REDIS_DISABLED='true'; $env:NODE_ENV='test'; npm test
+```
+
+When `REDIS_DISABLED=true` (or `NODE_ENV=test`), the backend uses a no-op Redis client so route and API tests can run without a Redis instance.
+
 ### Manual Testing
 1. Run backend and frontend
 2. Use browser dev tools
