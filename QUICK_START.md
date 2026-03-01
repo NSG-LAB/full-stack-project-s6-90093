@@ -53,12 +53,18 @@ cp .env.example .env
 ### Step 4: Run Application
 ```bash
 # From root directory
-npm run dev
+npm run dev:local
 ```
+
+`dev:local` does the following automatically:
+- Uses a Windows-safe launcher (`cross-spawn`)
+- Disables Redis dependency for local dev (`REDIS_DISABLED=true`)
+- Uses backend port `5001` by default to avoid common `5000` conflicts
+- Points frontend API base URL to `http://localhost:5001/api`
 
 **Access:**
 - Frontend: http://localhost:3000
-- Backend API: http://localhost:5000/api
+- Backend API: http://localhost:5001/api
 
 ---
 
