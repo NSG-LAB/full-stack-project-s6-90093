@@ -22,6 +22,18 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public List<User> getAllUsersNewestFirst() {
+        return userRepository.findAllByOrderByCreatedAtDesc();
+    }
+
     public User createUser(User user) {
         return userRepository.save(user);
     }

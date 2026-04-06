@@ -41,6 +41,22 @@ Notes:
 - Build artifacts are generated in `new Spring Boot project/target/` and are ignored by git.
 - Java upgrade tool logs under `new Spring Boot project/.github/java-upgrade/` are ignored by git.
 
+### API Parity Progress (Node -> Spring Boot)
+
+Implemented in `new Spring Boot project/`:
+
+- Auth: `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`
+- Users/Admin: profile read/update and admin user listing
+- Properties: CRUD, filtering/pagination, CSV export, image upload
+- Valuations: `POST /api/valuations/estimate`
+- Notifications: list/filter, create, mark-as-read
+- Recommendations: list/filter/pagination, property-specific suggestions, admin create/update/delete
+- ROI planner: `POST /api/roi/plan`
+- Reports: `POST /api/reports/valuation-pdf`
+- Analytics (admin): overview, user activity, properties, performance
+
+Remaining parity modules are being migrated incrementally (for example monitoring and enhancement checklist flows).
+
 ## Quick Local Test Tip (Node Backend Without Redis)
 
 - Windows PowerShell: `$env:REDIS_DISABLED='true'; $env:NODE_ENV='test'; npm test`

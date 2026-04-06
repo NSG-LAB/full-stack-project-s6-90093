@@ -1,5 +1,6 @@
 package com.example.security;
 
+import com.example.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,6 +11,10 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
+
+    public static final String CLAIM_USER_ID = "userId";
+    public static final String CLAIM_EMAIL = "email";
+    public static final String CLAIM_ROLE = "role";
 
     private final String secretKey;
     private final long expirationMs;
@@ -30,8 +35,46 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String generateToken(User user) {
+        return Jwts.builder()
+                .claim(CLAIM_USER_ID, user.getId())
+                .claim(CLAIM_EMAIL, user.getEmail())
+                .claim(CLAIM_ROLE, user.getRole())
+                .setSubject(user.getEmail())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
+    }
+
+    public String extractEmail(String token) {
+        Claims claims = extractAllClaims(token);
+        Object email = claims.get(CLAIM_EMAIL);
+        return email != null ? email.toString() : claims.getSubject();
+    }
+
+    public Long extractUserId(String token) {
+        Claims claims = extractAllClaims(token);
+        Object userId = claims.get(CLAIM_USER_ID);
+        if (userId instanceof Number number) {
+            return number.longValue();
+        }
+        return null;
+    }
+
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        Object role = claims.get(CLAIM_ROLE);
+        return role != null ? role.toString() : null;
+    }
+
+    public boolean isTokenValid(String token, User user) {
+        String email = extractEmail(token);
+        return email.equals(user.getEmail()) && !isTokenExpired(token);
     }
 
     public boolean isTokenValid(String token, String username) {
