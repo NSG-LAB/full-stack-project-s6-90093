@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -33,9 +34,14 @@ public class AuthControllerTest {
     @MockBean
     private JwtUtil jwtUtil;
 
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
     @BeforeEach
     void setup() {
         Mockito.when(jwtUtil.generateToken(Mockito.anyString())).thenReturn("mockedToken");
+        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+        Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
     }
 
     @Test
