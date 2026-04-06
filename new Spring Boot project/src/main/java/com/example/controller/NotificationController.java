@@ -86,7 +86,7 @@ public class NotificationController {
             ));
         }
 
-        Optional<User> owner = userRepository.findById(principal.userId());
+        Optional<User> owner = userRepository.findById(java.util.Objects.requireNonNull(principal.userId()));
         if (owner.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "Unauthorized"));
         }

@@ -12,13 +12,13 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
@@ -26,7 +26,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,16 +36,16 @@ public class EnhancementChecklistControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private EnhancementChecklistService enhancementChecklistService;
 
-    @MockBean
+    @MockitoBean
     private EnhancementChecklistRepository enhancementChecklistRepository;
 
-    @MockBean
+    @MockitoBean
     private JwtUtil jwtUtil;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
     @Test
@@ -56,7 +55,7 @@ public class EnhancementChecklistControllerTest {
         Mockito.when(enhancementChecklistService.parseAttachmentUrls(ArgumentMatchers.anyString())).thenReturn(List.of());
 
         mockMvc.perform(post("/api/enhancement-checklist")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
                         .content("{\"propertyId\":10,\"userId\":1,\"type\":\"before\",\"item\":\"Paint wall\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
@@ -76,21 +75,22 @@ public class EnhancementChecklistControllerTest {
     }
 
     @Test
-    public void uploadChecklistPhotoReturnsUrls() throws Exception {
+    @SuppressWarnings("null")
+    public void uploadPhotosToChecklistReturnsUrls() throws Exception {
         EnhancementChecklist checklist = checklist(3L);
         checklist.setAttachmentUrlsJson("[]");
 
         Mockito.when(enhancementChecklistRepository.findById(3L)).thenReturn(Optional.of(checklist));
         Mockito.when(enhancementChecklistService.parseAttachmentUrls("[]")).thenReturn(List.of());
         Mockito.when(enhancementChecklistService.toJson(ArgumentMatchers.any())).thenReturn("[\"/uploads/checklist/sample.jpg\"]");
-        Mockito.when(enhancementChecklistRepository.save(ArgumentMatchers.any(EnhancementChecklist.class))).thenReturn(checklist);
+        Mockito.doReturn(checklist).when(enhancementChecklistRepository).save(ArgumentMatchers.any(EnhancementChecklist.class));
 
         MockMultipartFile file = new MockMultipartFile("photos", "sample.jpg", "image/jpeg", "abc".getBytes());
 
         mockMvc.perform(multipart("/api/enhancement-checklist/upload/3").file(file))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.urls[0]", containsString("/uploads/checklist/")));
+                .andExpect(jsonPath("$.urls[0]", Objects.requireNonNull(containsString("/uploads/checklist/"))));
     }
 
     @Test

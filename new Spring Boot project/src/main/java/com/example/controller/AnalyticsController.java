@@ -1,8 +1,6 @@
 package com.example.controller;
 
-import com.example.model.Notification;
 import com.example.model.Property;
-import com.example.model.Recommendation;
 import com.example.model.User;
 import com.example.repository.NotificationRepository;
 import com.example.repository.PropertyRepository;
@@ -21,8 +19,6 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -154,7 +150,7 @@ public class AnalyticsController {
                 .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(id -> id, Collectors.counting()));
 
-        Map<Long, User> usersById = userRepository.findAllById(propertyCountByUser.keySet()).stream()
+        Map<Long, User> usersById = userRepository.findAllById(Objects.requireNonNull(propertyCountByUser.keySet())).stream()
                 .collect(Collectors.toMap(User::getId, user -> user));
 
         List<Map<String, Object>> topUsers = propertyCountByUser.entrySet().stream()

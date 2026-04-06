@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -46,6 +47,9 @@ public class EnhancementChecklistController {
                 return ResponseEntity.badRequest().body(Map.of("error", "No file URL provided"));
             }
 
+            if (itemId == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "No item ID provided"));
+            }
             Optional<EnhancementChecklist> optional = enhancementChecklistRepository.findById(itemId);
             if (optional.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Checklist item not found"));
@@ -55,7 +59,7 @@ public class EnhancementChecklistController {
             List<String> existingUrls = new ArrayList<>(enhancementChecklistService.parseAttachmentUrls(item.getAttachmentUrlsJson()));
             List<String> updatedUrls = existingUrls.stream().filter(existing -> !existing.equals(url)).toList();
             item.setAttachmentUrlsJson(enhancementChecklistService.toJson(updatedUrls));
-            enhancementChecklistRepository.save(item);
+            enhancementChecklistRepository.save(Objects.requireNonNull(item));
 
             if (url.startsWith("/uploads/")) {
                 String relative = url.substring("/uploads/".length());
@@ -85,6 +89,9 @@ public class EnhancementChecklistController {
                 return ResponseEntity.badRequest().body(Map.of("error", "No files uploaded"));
             }
 
+            if (id == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "No item ID provided"));
+            }
             Optional<EnhancementChecklist> optional = enhancementChecklistRepository.findById(id);
             if (optional.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Checklist item not found"));
@@ -101,24 +108,19 @@ public class EnhancementChecklistController {
                     continue;
                 }
 
-                String contentType = photo.getContentType();
-                if (contentType == null || !contentType.startsWith("image/")) {
-                    return ResponseEntity.badRequest().body(Map.of("error", "Only image files are allowed!"));
+                String originalFilename = photo.getOriginalFilename();
+                if (originalFilename == null) {
+                    continue;
                 }
+                String filename = StringUtils.cleanPath(originalFilename);
+                Path destination = uploadDir.resolve(filename).normalize();
 
-                String originalName = StringUtils.cleanPath(
-                        photo.getOriginalFilename() == null ? "photo.jpg" : photo.getOriginalFilename()
-                );
-                String normalizedOriginal = originalName.replaceAll("\\s+", "_");
-                String fileName = System.currentTimeMillis() + "-" + Math.round(Math.random() * 1_000_000_000d) + "-" + normalizedOriginal;
-                Path destination = uploadDir.resolve(fileName);
                 Files.copy(photo.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-
-                urls.add("/uploads/checklist/" + fileName);
+                urls.add("/uploads/checklist/" + filename);
             }
 
             item.setAttachmentUrlsJson(enhancementChecklistService.toJson(urls));
-            enhancementChecklistRepository.save(item);
+            enhancementChecklistRepository.save(Objects.requireNonNull(item));
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
@@ -145,6 +147,9 @@ public class EnhancementChecklistController {
             @PathVariable String type
     ) {
         try {
+            if (propertyId == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "No property ID provided"));
+            }
             List<Map<String, Object>> rows = enhancementChecklistService.getChecklistItems(propertyId, type)
                     .stream()
                     .map(this::toResponse)
@@ -161,6 +166,9 @@ public class EnhancementChecklistController {
             @RequestBody Map<String, Object> payload
     ) {
         try {
+            if (id == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "No item ID provided"));
+            }
             EnhancementChecklist updated = enhancementChecklistService.updateChecklistItem(id, payload);
             return ResponseEntity.ok(toResponse(updated));
         } catch (Exception ex) {

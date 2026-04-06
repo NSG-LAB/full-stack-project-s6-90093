@@ -22,11 +22,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -61,7 +61,7 @@ public class PropertyController {
             Path uploadDir = Paths.get("uploads");
             Files.createDirectories(uploadDir);
 
-            String originalName = StringUtils.cleanPath(image.getOriginalFilename() == null ? "image" : image.getOriginalFilename());
+            String originalName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
             String fileName = System.currentTimeMillis() + "-" + UUID.randomUUID() + "-" + originalName;
             Path destination = uploadDir.resolve(fileName);
             Files.copy(image.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
@@ -124,7 +124,11 @@ public class PropertyController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "Unauthorized"));
         }
 
-        Optional<User> userOptional = userRepository.findById(principal.userId());
+        Long userId = principal.userId();
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "User ID not found"));
+        }
+        Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "User not found"));
         }
@@ -136,7 +140,7 @@ public class PropertyController {
             property.setStatus("pending");
         }
 
-        Property saved = propertyRepository.save(property);
+        Property saved = propertyRepository.save(Objects.requireNonNull(property));
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "success", true,
                 "message", "Property submitted successfully",
@@ -202,7 +206,7 @@ public class PropertyController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPropertyById(@PathVariable Long id) {
-        Optional<Property> propertyOptional = propertyRepository.findById(id);
+        Optional<Property> propertyOptional = propertyRepository.findById(Objects.requireNonNull(id));
         if (propertyOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                     "success", false,
@@ -212,7 +216,7 @@ public class PropertyController {
 
         return ResponseEntity.ok(Map.of(
                 "success", true,
-                "property", toPropertyResponse(propertyOptional.get())
+                "property", toPropertyResponse(Objects.requireNonNull(propertyOptional.get()))
         ));
     }
 
@@ -226,7 +230,7 @@ public class PropertyController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "Unauthorized"));
         }
 
-        Optional<Property> propertyOptional = propertyRepository.findById(id);
+        Optional<Property> propertyOptional = propertyRepository.findById(Objects.requireNonNull(id));
         if (propertyOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                     "success", false,
@@ -243,7 +247,7 @@ public class PropertyController {
         }
 
         applyFromPayload(property, payload);
-        Property saved = propertyRepository.save(property);
+        Property saved = propertyRepository.save(Objects.requireNonNull(property));
 
         return ResponseEntity.ok(Map.of(
                 "success", true,
@@ -261,7 +265,7 @@ public class PropertyController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "Unauthorized"));
         }
 
-        Optional<Property> propertyOptional = propertyRepository.findById(id);
+        Optional<Property> propertyOptional = propertyRepository.findById(Objects.requireNonNull(id));
         if (propertyOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                     "success", false,
@@ -277,7 +281,7 @@ public class PropertyController {
             ));
         }
 
-        propertyRepository.delete(property);
+        propertyRepository.delete(Objects.requireNonNull(property));
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "message", "Property deleted successfully"
@@ -285,7 +289,7 @@ public class PropertyController {
     }
 
     private boolean isOwnerOrAdmin(Property property, JwtPrincipal principal) {
-        Long ownerId = property.getOwner() == null ? null : property.getOwner().getId();
+        Long ownerId = property.getOwner() == null ? null : Objects.requireNonNull(property.getOwner()).getId();
         return ownerId != null && ownerId.equals(principal.userId())
                 || "admin".equalsIgnoreCase(principal.role());
     }

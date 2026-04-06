@@ -12,13 +12,14 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,16 +32,16 @@ public class RoiControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private RecommendationRepository recommendationRepository;
 
-    @MockBean
+    @MockitoBean
     private RoiPlannerService roiPlannerService;
 
-    @MockBean
+    @MockitoBean
     private JwtUtil jwtUtil;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
     @Test
@@ -62,7 +63,7 @@ public class RoiControllerTest {
                 .thenReturn(Map.of("selectedCount", 1, "budget", 5000));
 
         mockMvc.perform(post("/api/roi/plan")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
                         .content("{\"budget\":5000,\"propertyType\":\"house\",\"propertyCondition\":\"good\",\"city\":\"Sydney\",\"topN\":3}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
@@ -73,10 +74,11 @@ public class RoiControllerTest {
     @Test
     public void createPlanReturnsValidationError() throws Exception {
         mockMvc.perform(post("/api/roi/plan")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
                         .content("{\"topN\":99,\"propertyCondition\":\"bad\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.errors").isArray());
     }
 }
+

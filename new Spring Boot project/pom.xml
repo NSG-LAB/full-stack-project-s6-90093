@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
     <artifactId>spring-boot-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+            <version>3.5.13</version>
     <packaging>jar</packaging>
 
     <name>Spring Boot Backend</name>
@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.10</version>
+        <version>3.5.13</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 

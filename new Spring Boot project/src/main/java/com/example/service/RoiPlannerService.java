@@ -124,6 +124,7 @@ public class RoiPlannerService {
         return item;
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Object> parseCostObject(String json) {
         if (json == null || json.isBlank()) {
             return Map.of();

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class EnhancementChecklistService {
@@ -34,13 +35,19 @@ public class EnhancementChecklistService {
     }
 
     public EnhancementChecklist updateChecklistItem(Long id, Map<String, Object> updates) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         EnhancementChecklist existing = enhancementChecklistRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Checklist item not found"));
         applyPayload(existing, updates, false);
-        return enhancementChecklistRepository.save(existing);
+        return enhancementChecklistRepository.save(Objects.requireNonNull(existing));
     }
 
     public void deleteChecklistItem(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         if (!enhancementChecklistRepository.existsById(id)) {
             throw new IllegalArgumentException("Checklist item not found");
         }

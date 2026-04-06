@@ -9,11 +9,12 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,13 +27,13 @@ public class ValuationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private ValuationService valuationService;
 
-    @MockBean
+    @MockitoBean
     private JwtUtil jwtUtil;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
     @Test
@@ -44,7 +45,7 @@ public class ValuationControllerTest {
         ));
 
         mockMvc.perform(post("/api/valuations/estimate")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
                 .content("{\"areaSqft\":1200,\"ageYears\":5,\"bedrooms\":3,\"bathrooms\":2,\"conditionScore\":4}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.currentValue").value(1000000))
@@ -55,9 +56,10 @@ public class ValuationControllerTest {
     @Test
     public void estimateReturnsValidationErrorsForInvalidPayload() throws Exception {
         mockMvc.perform(post("/api/valuations/estimate")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
                 .content("{\"areaSqft\":90,\"ageYears\":-1,\"bedrooms\":-1,\"bathrooms\":-1,\"conditionScore\":8}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").isArray());
     }
 }
+

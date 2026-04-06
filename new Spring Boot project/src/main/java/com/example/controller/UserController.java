@@ -34,7 +34,7 @@ public class UserController {
             ));
         }
 
-        Optional<User> userOptional = userRepository.findById(principal.userId());
+        Optional<User> userOptional = userRepository.findById(java.util.Objects.requireNonNull(principal.userId()));
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                     "success", false,
@@ -60,7 +60,7 @@ public class UserController {
             ));
         }
 
-        Optional<User> userOptional = userRepository.findById(principal.userId());
+        Optional<User> userOptional = userRepository.findById(java.util.Objects.requireNonNull(principal.userId()));
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                     "success", false,
@@ -114,13 +114,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userRepository.findById(java.util.Objects.requireNonNull(id));
         return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(java.util.Objects.requireNonNull(user));
         return ResponseEntity.ok(savedUser);
     }
 

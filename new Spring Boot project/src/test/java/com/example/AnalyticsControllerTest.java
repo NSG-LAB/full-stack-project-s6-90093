@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Objects;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -35,27 +36,27 @@ public class AnalyticsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
-    @MockBean
+    @MockitoBean
     private PropertyRepository propertyRepository;
 
-    @MockBean
+    @MockitoBean
     private RecommendationRepository recommendationRepository;
 
-    @MockBean
+    @MockitoBean
     private NotificationRepository notificationRepository;
 
-    @MockBean
+    @MockitoBean
     private DataSource dataSource;
 
-    @MockBean
+    @MockitoBean
     private JwtUtil jwtUtil;
 
     @Test
     public void overviewReturnsForbiddenForNonAdmin() throws Exception {
-        mockMvc.perform(get("/api/analytics/overview").with(jwtPrincipal("user")))
+        mockMvc.perform(get("/api/analytics/overview").with(Objects.requireNonNull(jwtPrincipal("user"))))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Admin access required"));
@@ -69,9 +70,9 @@ public class AnalyticsControllerTest {
 
         Mockito.when(userRepository.count()).thenReturn(10L);
         Mockito.when(userRepository.countByIsActiveTrue()).thenReturn(8L);
-        Mockito.when(userRepository.countByCreatedAtBetween(Mockito.any(), Mockito.any())).thenReturn(2L);
+        Mockito.when(userRepository.countByCreatedAtBetween(Mockito.any(java.time.LocalDateTime.class), Mockito.any(java.time.LocalDateTime.class))).thenReturn(2L);
         Mockito.when(propertyRepository.count()).thenReturn(6L);
-        Mockito.when(propertyRepository.countByCreatedAtBetween(Mockito.any(), Mockito.any())).thenReturn(3L);
+        Mockito.when(propertyRepository.countByCreatedAtBetween(Mockito.any(java.time.LocalDateTime.class), Mockito.any(java.time.LocalDateTime.class))).thenReturn(3L);
         Mockito.when(recommendationRepository.count()).thenReturn(5L);
         Mockito.when(recommendationRepository.countByIsActiveTrue()).thenReturn(4L);
         Mockito.when(notificationRepository.count()).thenReturn(9L);
@@ -79,7 +80,7 @@ public class AnalyticsControllerTest {
         Mockito.when(userRepository.findAll()).thenReturn(List.of(admin));
         Mockito.when(propertyRepository.findAll()).thenReturn(List.of());
 
-        mockMvc.perform(get("/api/analytics/overview").with(jwtPrincipal("admin")))
+        mockMvc.perform(get("/api/analytics/overview").with(Objects.requireNonNull(jwtPrincipal("admin"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.users.total").value(10))

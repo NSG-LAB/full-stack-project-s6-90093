@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,13 +39,13 @@ public class NotificationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private NotificationRepository notificationRepository;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
-    @MockBean
+    @MockitoBean
     private JwtUtil jwtUtil;
 
     @Test
@@ -55,7 +56,7 @@ public class NotificationControllerTest {
 
         mockMvc.perform(get("/api/notifications")
                         .param("unreadOnly", "true")
-                        .with(jwtPrincipal()))
+                        .with(Objects.requireNonNull(jwtPrincipal())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.count").value(1))
@@ -63,18 +64,19 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void createNotificationReturnsCreated() throws Exception {
+    @SuppressWarnings("null")
+    public void createNotificationReturnsSavedNotification() throws Exception {
         User owner = new User();
         owner.setId(1L);
 
         Notification notification = notification(10L, 1L, "Title", false);
 
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(owner));
-        Mockito.when(notificationRepository.save(Mockito.any(Notification.class))).thenReturn(notification);
+        Mockito.doReturn(notification).when(notificationRepository).save(Mockito.any(Notification.class));
 
         mockMvc.perform(post("/api/notifications")
-                        .with(jwtPrincipal())
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(Objects.requireNonNull(jwtPrincipal()))
+                        .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
                         .content("{\"title\":\"Title\",\"message\":\"Body\",\"type\":\"reminder\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
@@ -86,7 +88,7 @@ public class NotificationControllerTest {
     public void markReadReturnsNotFound() throws Exception {
         Mockito.when(notificationRepository.findByIdAndOwnerId(99L, 1L)).thenReturn(Optional.empty());
 
-        mockMvc.perform(patch("/api/notifications/99/read").with(jwtPrincipal()))
+        mockMvc.perform(patch("/api/notifications/99/read").with(Objects.requireNonNull(jwtPrincipal())))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Notification not found"));
@@ -122,3 +124,4 @@ public class NotificationControllerTest {
         return notification;
     }
 }
+

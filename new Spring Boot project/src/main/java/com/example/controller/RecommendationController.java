@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -112,7 +113,7 @@ public class RecommendationController {
 
     @GetMapping("/property/{propertyId}")
     public ResponseEntity<?> getRecommendationsForProperty(@PathVariable Long propertyId) {
-        Optional<Property> propertyOptional = propertyRepository.findById(propertyId);
+        Optional<Property> propertyOptional = propertyRepository.findById(Objects.requireNonNull(propertyId));
         if (propertyOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                     "success", false,
@@ -184,7 +185,7 @@ public class RecommendationController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("success", false, "message", "Admin access required"));
         }
 
-        Optional<Recommendation> recommendationOptional = recommendationRepository.findById(id);
+        Optional<Recommendation> recommendationOptional = recommendationRepository.findById(Objects.requireNonNull(id));
         if (recommendationOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                     "success", false,
@@ -199,7 +200,7 @@ public class RecommendationController {
             recommendation.setRelatedRecommendationIdsJson(toJson(extractRelatedIds(payload)));
         }
 
-        Recommendation updated = recommendationRepository.save(recommendation);
+        Recommendation updated = recommendationRepository.save(Objects.requireNonNull(recommendation));
         Map<Long, Recommendation> relatedById = loadRelatedRecommendations(List.of(updated));
 
         return ResponseEntity.ok(Map.of(
@@ -221,7 +222,7 @@ public class RecommendationController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("success", false, "message", "Admin access required"));
         }
 
-        Optional<Recommendation> recommendationOptional = recommendationRepository.findById(id);
+        Optional<Recommendation> recommendationOptional = recommendationRepository.findById(Objects.requireNonNull(id));
         if (recommendationOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                     "success", false,
@@ -229,7 +230,7 @@ public class RecommendationController {
             ));
         }
 
-        recommendationRepository.delete(recommendationOptional.get());
+        recommendationRepository.delete(Objects.requireNonNull(recommendationOptional.get()));
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "message", "Recommendation deleted successfully"

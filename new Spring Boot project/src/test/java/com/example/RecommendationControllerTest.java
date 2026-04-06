@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -39,16 +40,16 @@ public class RecommendationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private RecommendationRepository recommendationRepository;
 
-    @MockBean
+    @MockitoBean
     private PropertyRepository propertyRepository;
 
-    @MockBean
+    @MockitoBean
     private JwtUtil jwtUtil;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
     @Test
@@ -59,7 +60,7 @@ public class RecommendationControllerTest {
 
         Mockito.when(recommendationRepository.findByIsActiveTrue(ArgumentMatchers.any()))
                 .thenReturn(List.of(rec1, rec2));
-        Mockito.when(recommendationRepository.findAllById(ArgumentMatchers.anyIterable()))
+        Mockito.when(recommendationRepository.findAllById(Objects.requireNonNull(ArgumentMatchers.anyIterable())))
                 .thenReturn(List.of(rec2));
 
         mockMvc.perform(get("/api/recommendations")
@@ -105,8 +106,8 @@ public class RecommendationControllerTest {
     @Test
     public void createRecommendationRejectsNonAdmin() throws Exception {
         mockMvc.perform(post("/api/recommendations")
-                        .with(jwtPrincipal("user"))
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(Objects.requireNonNull(jwtPrincipal("user")))
+                        .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
                         .content("{\"title\":\"A\",\"category\":\"flooring\",\"description\":\"D\",\"expectedROI\":10,\"difficulty\":\"easy\"}"))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.success").value(false))
@@ -114,18 +115,19 @@ public class RecommendationControllerTest {
     }
 
     @Test
-    public void createRecommendationReturnsCreatedForAdmin() throws Exception {
+    @SuppressWarnings("null")
+    public void createRecommendationReturnsSavedRecommendation() throws Exception {
         Recommendation related = recommendation(2L, "Related", "flooring", "easy", 20);
 
         Recommendation saved = recommendation(5L, "Roof Repair", "safety-security", "moderate", 75);
         saved.setRelatedRecommendationIdsJson("[2]");
 
-        Mockito.when(recommendationRepository.save(ArgumentMatchers.any(Recommendation.class))).thenReturn(saved);
-        Mockito.when(recommendationRepository.findAllById(ArgumentMatchers.anyIterable())).thenReturn(List.of(related));
+        Mockito.doReturn(saved).when(recommendationRepository).save(ArgumentMatchers.any(Recommendation.class));
+        Mockito.when(recommendationRepository.findAllById(Objects.requireNonNull(ArgumentMatchers.anyIterable()))).thenReturn(List.of(related));
 
         mockMvc.perform(post("/api/recommendations")
-                        .with(jwtPrincipal("admin"))
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(Objects.requireNonNull(jwtPrincipal("admin")))
+                        .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
                         .content("{\"title\":\"Roof Repair\",\"category\":\"safety-security\",\"description\":\"Improve roof\",\"expectedROI\":75,\"difficulty\":\"moderate\",\"relatedRecommendationIds\":[2]}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
@@ -173,3 +175,4 @@ public class RecommendationControllerTest {
         return recommendation;
     }
 }
+
