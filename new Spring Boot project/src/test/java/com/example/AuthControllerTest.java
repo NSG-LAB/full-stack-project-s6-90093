@@ -35,6 +35,16 @@ public class AuthControllerTest {
     @MockBean
     private JwtUtil jwtUtil;
 
+    @MockBean
+    private SomeOtherDependency someOtherDependency; // Replace with actual missing dependency
+
+    @BeforeEach
+    public void setup() {
+        Mockito.when(jwtUtil.generateToken(Mockito.anyString())).thenReturn("mockedToken");
+        Mockito.when(jwtUtil.isTokenValid(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+        Mockito.when(someOtherDependency.someMethod()).thenReturn("mockedValue"); // Example mock setup
+    }
+
     @Test
     public void testRegisterUser() throws Exception {
         User user = new User();

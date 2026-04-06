@@ -103,13 +103,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring Test dependency for MockMvc and jsonPath -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- Explicitly adding jackson-databind to address CVEs -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -127,7 +120,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>3.0.0</version>
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
@@ -139,13 +132,6 @@
                         </property>
                     </properties>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.platform</groupId>
-                        <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>1.3.2</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
