@@ -8,3 +8,7 @@ build/
 .vscode
 .idea
 .eslintcache
+
+# Java/Spring Boot migration workspace artifacts
+new Spring Boot project/target/
+new Spring Boot project/.github/java-upgrade/

@@ -4,26 +4,24 @@ import com.example.controller.AuthController;
 import com.example.model.User;
 import com.example.security.JwtUtil;
 import com.example.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Service;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = AuthController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class AuthControllerTest {
 
     @Autowired
@@ -35,14 +33,9 @@ public class AuthControllerTest {
     @MockBean
     private JwtUtil jwtUtil;
 
-    @MockBean
-    private SomeOtherDependency someOtherDependency; // Replace with actual missing dependency
-
     @BeforeEach
-    public void setup() {
+    void setup() {
         Mockito.when(jwtUtil.generateToken(Mockito.anyString())).thenReturn("mockedToken");
-        Mockito.when(jwtUtil.isTokenValid(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-        Mockito.when(someOtherDependency.someMethod()).thenReturn("mockedValue"); // Example mock setup
     }
 
     @Test
@@ -67,20 +60,12 @@ public class AuthControllerTest {
         user.setUsername("testuser");
         user.setPassword("password");
 
-        Mockito.when(userService.getAllUsers()).thenReturn(java.util.List.of(user));
-
-        Map<String, String> credentials = new HashMap<>();
-        credentials.put("username", "testuser");
-        credentials.put("password", "password");
-
-        String token = jwtUtil.generateToken("testuser");
-        assertNotNull(token);
-        assertTrue(jwtUtil.isTokenValid(token, "testuser"));
+        Mockito.when(userService.getAllUsers()).thenReturn(List.of(user));
 
         mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"testuser\",\"password\":\"password\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.token").value(token));
+            .andExpect(jsonPath("$.token").value("mockedToken"));
     }
 }
