@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.model.User;
 import com.example.security.JwtUtil;
+<<<<<<< HEAD
 import com.example.security.JwtPrincipal;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+=======
+import com.example.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+<<<<<<< HEAD
 import java.util.Optional;
+=======
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,6 +34,7 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+<<<<<<< HEAD
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -56,10 +66,17 @@ public class AuthController {
                 "token", token,
                 "user", toPublicUser(createdUser)
         ));
+=======
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        User newUser = userService.createUser(user);
+        return ResponseEntity.ok(newUser);
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
+<<<<<<< HEAD
         String email = credentials.get("email");
         String password = credentials.get("password");
 
@@ -119,5 +136,23 @@ public class AuthController {
         result.put("createdAt", user.getCreatedAt());
         result.put("updatedAt", user.getUpdatedAt());
         return result;
+=======
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+
+        User user = userService.getAllUsers().stream()
+                .filter(u -> u.getUsername().equals(username) && u.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
+
+        if (user == null) {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+
+        String token = jwtUtil.generateToken(username);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        return ResponseEntity.ok(response);
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
     }
 }

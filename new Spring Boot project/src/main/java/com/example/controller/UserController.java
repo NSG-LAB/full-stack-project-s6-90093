@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.model.User;
 import com.example.repository.UserRepository;
+<<<<<<< HEAD
 import com.example.security.JwtPrincipal;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
 import java.util.Optional;
 
 @RestController
@@ -22,6 +29,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+<<<<<<< HEAD
     @Autowired
     private UserService userService;
 
@@ -115,11 +123,17 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> user = userRepository.findById(java.util.Objects.requireNonNull(id));
+=======
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        Optional<User> user = userRepository.findById(id);
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
         return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
+<<<<<<< HEAD
         User savedUser = userRepository.save(java.util.Objects.requireNonNull(user));
         return ResponseEntity.ok(savedUser);
     }
@@ -141,4 +155,9 @@ public class UserController {
         result.put("updatedAt", user.getUpdatedAt());
         return result;
     }
+=======
+        User savedUser = userRepository.save(user);
+        return ResponseEntity.ok(savedUser);
+    }
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
 }

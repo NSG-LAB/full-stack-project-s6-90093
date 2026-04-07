@@ -1,11 +1,15 @@
 package com.example.model;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+=======
+import jakarta.persistence.*;
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
 
 @Entity
 @Table(name = "users")
@@ -15,11 +19,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+<<<<<<< HEAD
     @Column(unique = true)
     private String username;
 
     @Column(nullable = false)
     @JsonIgnore
+=======
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
     private String password;
 
     @Column(nullable = false)
@@ -28,6 +39,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+<<<<<<< HEAD
     @Column(nullable = false)
     private String firstName;
 
@@ -54,6 +66,8 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+=======
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
     // Getters and Setters
     public Long getId() {
         return id;
@@ -94,6 +108,7 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+<<<<<<< HEAD
 
     public String getFirstName() {
         return firstName;
@@ -166,4 +181,6 @@ public class User {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+=======
+>>>>>>> copilot/worktree-2026-04-06T05-00-30
 }
