@@ -1,6 +1,5 @@
 package com.example.security;
 
-<<<<<<< HEAD
 import com.example.config.JwtProperties;
 import com.example.model.User;
 import io.jsonwebtoken.Claims;
@@ -9,19 +8,11 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-=======
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
-
->>>>>>> copilot/worktree-2026-04-06T05-00-30
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-<<<<<<< HEAD
     public static final String CLAIM_USER_ID = "userId";
     public static final String CLAIM_EMAIL = "email";
     public static final String CLAIM_ROLE = "role";
@@ -33,15 +24,11 @@ public class JwtUtil {
         this.secretKey = Keys.hmacShaKeyFor(jwtProperties.secret().getBytes());
         this.expirationMs = jwtProperties.expirationMs();
     }
-=======
-    private final String SECRET_KEY = "secret";
->>>>>>> copilot/worktree-2026-04-06T05-00-30
 
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-<<<<<<< HEAD
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(secretKey)
                 .compact();
@@ -56,10 +43,6 @@ public class JwtUtil {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(secretKey)
-=======
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
->>>>>>> copilot/worktree-2026-04-06T05-00-30
                 .compact();
     }
 
@@ -67,7 +50,6 @@ public class JwtUtil {
         return extractAllClaims(token).getSubject();
     }
 
-<<<<<<< HEAD
     public String extractEmail(String token) {
         Claims claims = extractAllClaims(token);
         Object email = claims.get(CLAIM_EMAIL);
@@ -94,8 +76,6 @@ public class JwtUtil {
         return email.equals(user.getEmail()) && !isTokenExpired(token);
     }
 
-=======
->>>>>>> copilot/worktree-2026-04-06T05-00-30
     public boolean isTokenValid(String token, String username) {
         return extractUsername(token).equals(username) && !isTokenExpired(token);
     }
@@ -105,10 +85,6 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-<<<<<<< HEAD
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
-=======
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
->>>>>>> copilot/worktree-2026-04-06T05-00-30
     }
 }

@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Objects;
-=======
->>>>>>> copilot/worktree-2026-04-06T05-00-30
 import java.util.Optional;
 
 @Service
@@ -23,7 +20,6 @@ public class UserService {
     }
 
     public Optional<User> getUserById(Long id) {
-<<<<<<< HEAD
         return userRepository.findById(Objects.requireNonNull(id));
     }
 
@@ -45,16 +41,5 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(Objects.requireNonNull(id));
-=======
-        return userRepository.findById(id);
-    }
-
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
->>>>>>> copilot/worktree-2026-04-06T05-00-30
     }
 }

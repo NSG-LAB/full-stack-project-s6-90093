@@ -1,0 +1,12 @@
+M	backend/routes/reports.js
+M	frontend/package-lock.json
+M	frontend/package.json
+M	frontend/public/index.html
+M	frontend/src/App.js
+M	frontend/src/components/layout/Footer.js
+M	frontend/src/pages/AdminDashboard.js
+M	frontend/src/pages/Home.js
+M	frontend/src/pages/ROIPlanner.js
+M	frontend/src/pages/Recommendations.js
+M	frontend/src/pages/UserDashboard.js
+M	frontend/src/pages/ValuationEstimator.js
