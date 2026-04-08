@@ -34,6 +34,7 @@ Examples:
 - Backend base URL: `https://full-stack-project-s6-90093-production.up.railway.app`
 - API base URL to use in frontend builds: `https://full-stack-project-s6-90093-production.up.railway.app/api`
 - Frontend production env key: `VITE_API_URL`
+- Backend CORS allowlist envs: `FRONTEND_URL` and `CORS_ALLOWED_ORIGINS` (comma-separated)
 
 This repo now includes `frontend/.env.production` with `VITE_API_URL` set to the Railway API URL.
 
