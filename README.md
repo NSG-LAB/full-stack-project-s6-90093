@@ -38,6 +38,22 @@ Examples:
 
 This repo now includes `frontend/.env.production` with `VITE_API_URL` set to the Railway API URL.
 
+## Deploy Frontend to GitHub Pages
+
+This repository includes a GitHub Actions workflow at `.github/workflows/deploy-gh-pages.yml` that deploys the frontend to GitHub Pages.
+
+How it works:
+
+- Workflow builds `frontend/` on pushes to `main` (or manual dispatch)
+- Build uses `VITE_BASE_PATH=/<repo-name>/` so routing works on Pages
+- Workflow publishes `frontend/dist` to the `github-pages` environment
+
+One-time repository setup:
+
+1. Go to repository **Settings** > **Pages**.
+2. Under **Build and deployment**, choose **Source: GitHub Actions**.
+3. Push changes to `main` (or run the workflow manually).
+
 ## Spring Boot Migration Module
 
 From `new Spring Boot project/`:
