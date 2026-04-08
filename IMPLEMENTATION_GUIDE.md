@@ -429,18 +429,18 @@ const api = axios.create({
 **After**:
 ```javascript
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
 });
 ```
 
 **Create**: `frontend/.env.local` (local dev)
 ```env
-REACT_APP_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5000/api
 ```
 
 **Create**: `frontend/.env.production` (production)
 ```env
-REACT_APP_API_URL=https://api.yourdomain.com/api
+VITE_API_URL=https://full-stack-project-s6-90093-production.up.railway.app/api
 ```
 
 ---

@@ -29,6 +29,14 @@ Examples:
 - PowerShell: `$env:AUTO_SELECT_API_PORT='false'; $env:LOCAL_API_PORT='5010'; npm run dev:local`
 - bash: `AUTO_SELECT_API_PORT=false LOCAL_API_PORT=5010 npm run dev:local`
 
+## Deployed Backend (Railway)
+
+- Backend base URL: `https://full-stack-project-s6-90093-production.up.railway.app`
+- API base URL to use in frontend builds: `https://full-stack-project-s6-90093-production.up.railway.app/api`
+- Frontend production env key: `VITE_API_URL`
+
+This repo now includes `frontend/.env.production` with `VITE_API_URL` set to the Railway API URL.
+
 ## Spring Boot Migration Module
 
 From `new Spring Boot project/`:
