@@ -40,6 +40,7 @@ jobs:
         working-directory: frontend
         env:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_API_URL: https://full-stack-project-s6-90093-production.up.railway.app/api
 
       - name: Add SPA fallback page
         run: cp frontend/dist/index.html frontend/dist/404.html
